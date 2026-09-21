@@ -1,0 +1,39 @@
+name: LumaQuest Playtest Build
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+    paths:
+      - "project.godot"
+      - "export_presets.cfg"
+      - "scenes/**"
+      - "scripts/**"
+
+jobs:
+  windows:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Download Godot
+        run: |
+          wget -q https://github.com/godotengine/godot/releases/download/3.5.3-stable/Godot_v3.5.3-stable_linux_headless.64.zip
+          unzip -q Godot_v3.5.3-stable_linux_headless.64.zip
+          chmod +x Godot_v3.5.3-stable_linux_headless.64
+          sudo mv Godot_v3.5.3-stable_linux_headless.64 /usr/local/bin/godot
+      - name: Install export templates
+        run: |
+          wget -q https://github.com/godotengine/godot/releases/download/3.5.3-stable/Godot_v3.5.3-stable_export_templates.tpz
+          mkdir -p ~/.local/share/godot/templates/3.5.3.stable
+          unzip -q Godot_v3.5.3-stable_export_templates.tpz
+          cp -r templates/* ~/.local/share/godot/templates/3.5.3.stable/
+      - name: Build Windows playtest
+        run: |
+          mkdir -p build
+          godot --path . --no-window --export "Windows Desktop" build/LumaQuest.exe
+      - name: Upload playtest
+        uses: actions/upload-artifact@v4
+        with:
+          name: LumaQuest-Windows-Playtest
+          path: build/
