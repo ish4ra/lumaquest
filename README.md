@@ -42,9 +42,11 @@ The prototype currently targets Godot 3.x with the GLES2 renderer. This keeps th
 
 ## Status
 
-**Prototype 0.1 — Foundation**
+**Prototype 0.2 — Movement & Luma mechanics**
 
-Next milestone: improve movement feel, replace placeholder shapes with original pixel art, add camera/level structure, and introduce the first fairy interaction mechanic.
+Implemented next: acceleration/friction, coyote time, jump buffering, variable jump height, camera foundation, sword input/combat foundation, and Luma reveal logic for hidden paths.
+
+Next milestone: original pixel-art hero/Luma assets, enemies with damage/knockback, collectibles/HUD, a complete first level, and R36S packaging tests.
 
 ## License
 
