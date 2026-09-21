@@ -20,4 +20,5 @@ func _draw():
         # Sign
         draw_rect(Rect2(-3,-42,6,42), Color("#624326"))
         draw_rect(Rect2(-38,-46,76,22), Color("#7b552d"))
-        draw_string(null, Vector2(-30,-31), "RUINS  ->", Color("#f1dfb1"))
+        # Text is rendered by scene UI, never with a null Font in _draw().
+        draw_colored_polygon(PoolVector2Array([Vector2(12,-42),Vector2(30,-35),Vector2(12,-28)]), Color("#f1dfb1"))
