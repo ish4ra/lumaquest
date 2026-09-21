@@ -53,10 +53,10 @@ position = Vector2(900.0, 430.0)
 shape = SubResource(2)
 [node name="Earth" type="Polygon2D" parent="Ground"]
 polygon = PoolVector2Array( -900.0, -12.0, 900.0, -12.0, 900.0, 70.0, -900.0, 70.0 )
-color = Color("#183b2b")
+color = Color( 0.094118, 0.231373, 0.168627, 1 )
 [node name="Grass" type="Polygon2D" parent="Ground"]
 polygon = PoolVector2Array( -900.0, -12.0, 900.0, -12.0, 900.0, -5.0, -900.0, -5.0 )
-color = Color("#65a84d")
+color = Color( 0.396078, 0.658824, 0.301961, 1 )
 
 [node name="BridgePlatform" type="StaticBody2D" parent="."]
 position = Vector2(650.0, 345.0)
@@ -64,7 +64,7 @@ position = Vector2(650.0, 345.0)
 shape = SubResource(3)
 [node name="Visual" type="Polygon2D" parent="BridgePlatform"]
 polygon = PoolVector2Array( -55.0, -8.0, 55.0, -8.0, 55.0, 8.0, -55.0, 8.0 )
-color = Color("#765431")
+color = Color( 0.462745, 0.329412, 0.192157, 1 )
 
 [node name="HiddenPlatform" type="StaticBody2D" parent="."]
 position = Vector2(790.0, 285.0)
@@ -73,7 +73,7 @@ script = ExtResource(3)
 shape = SubResource(3)
 [node name="Visual" type="Polygon2D" parent="HiddenPlatform"]
 polygon = PoolVector2Array( -55.0, -8.0, 55.0, -8.0, 55.0, 8.0, -55.0, 8.0 )
-color = Color("#65c7b7")
+color = Color( 0.396078, 0.780392, 0.717647, 1 )
 
 [node name="RuinPlatform" type="StaticBody2D" parent="."]
 position = Vector2(930.0, 225.0)
@@ -81,7 +81,7 @@ position = Vector2(930.0, 225.0)
 shape = SubResource(3)
 [node name="Visual" type="Polygon2D" parent="RuinPlatform"]
 polygon = PoolVector2Array( -55.0, -8.0, 55.0, -8.0, 55.0, 8.0, -55.0, 8.0 )
-color = Color("#697463")
+color = Color( 0.411765, 0.454902, 0.388235, 1 )
 
 [node name="Player" type="KinematicBody2D" parent="."]
 position = Vector2(430.0, 382.0)
@@ -90,19 +90,19 @@ script = ExtResource(1)
 shape = SubResource(1)
 [node name="Body" type="Polygon2D" parent="Player"]
 polygon = PoolVector2Array( -9.0, -15.0, 7.0, -15.0, 10.0, -7.0, 9.0, 15.0, -8.0, 15.0, -10.0, -5.0 )
-color = Color("#d9e4dc")
+color = Color( 0.850980, 0.894118, 0.862745, 1 )
 [node name="Cloak" type="Polygon2D" parent="Player"]
 polygon = PoolVector2Array( -8.0, -4.0, 5.0, -6.0, 12.0, 15.0, -10.0, 15.0 )
-color = Color("#254f3b")
+color = Color( 0.145098, 0.309804, 0.231373, 1 )
 [node name="Hair" type="Polygon2D" parent="Player"]
 polygon = PoolVector2Array( -9.0, -15.0, -3.0, -22.0, 8.0, -19.0, 10.0, -10.0, 2.0, -13.0, -4.0, -9.0 )
-color = Color("#54351f")
+color = Color( 0.329412, 0.207843, 0.121569, 1 )
 [node name="SwordPivot" type="Node2D" parent="Player"]
 position = Vector2(8.0, 0.0)
 [node name="Blade" type="Polygon2D" parent="Player/SwordPivot"]
 visible = false
 polygon = PoolVector2Array( 4.0, -2.0, 27.0, -2.0, 32.0, 0.0, 27.0, 2.0, 4.0, 2.0 )
-color = Color("#e8f4ee")
+color = Color( 0.909804, 0.956863, 0.933333, 1 )
 [node name="Hitbox" type="Area2D" parent="Player/SwordPivot"]
 monitoring = false
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Player/SwordPivot/Hitbox"]
@@ -127,13 +127,13 @@ polygon = PoolVector2Array( 0.0, -20.0, 14.0, -14.0, 20.0, 0.0, 14.0, 14.0, 0.0,
 color = Color(0.25,0.85,1,0.18)
 [node name="WingL" type="Polygon2D" parent="Fairy"]
 polygon = PoolVector2Array( -3.0, -2.0, -13.0, -12.0, -11.0, 1.0, -4.0, 5.0 )
-color = Color("#baf7ff")
+color = Color( 0.729412, 0.968627, 1.000000, 1 )
 [node name="WingR" type="Polygon2D" parent="Fairy"]
 polygon = PoolVector2Array( 3.0, -2.0, 13.0, -12.0, 11.0, 1.0, 4.0, 5.0 )
-color = Color("#baf7ff")
+color = Color( 0.729412, 0.968627, 1.000000, 1 )
 [node name="Glow" type="Polygon2D" parent="Fairy"]
 polygon = PoolVector2Array( 0.0, -7.0, 6.0, -2.0, 5.0, 6.0, 0.0, 9.0, -5.0, 6.0, -6.0, -2.0 )
-color = Color("#63e9ff")
+color = Color( 0.388235, 0.913725, 1.000000, 1 )
 
 [node name="Goblin1" type="KinematicBody2D" parent="."]
 position = Vector2(1080.0, 385.0)
@@ -143,13 +143,13 @@ shape = SubResource(6)
 [node name="Visual" type="Node2D" parent="Goblin1"]
 [node name="Body" type="Polygon2D" parent="Goblin1/Visual"]
 polygon = PoolVector2Array( -13.0, -10.0, 10.0, -12.0, 15.0, 0.0, 9.0, 12.0, -12.0, 12.0, -16.0, 0.0 )
-color = Color("#66984a")
+color = Color( 0.400000, 0.596078, 0.290196, 1 )
 [node name="EarL" type="Polygon2D" parent="Goblin1/Visual"]
 polygon = PoolVector2Array( -10.0, -7.0, -24.0, -12.0, -12.0, 1.0 )
-color = Color("#77a955")
+color = Color( 0.466667, 0.662745, 0.333333, 1 )
 [node name="EarR" type="Polygon2D" parent="Goblin1/Visual"]
 polygon = PoolVector2Array( 9.0, -7.0, 23.0, -12.0, 11.0, 1.0 )
-color = Color("#77a955")
+color = Color( 0.466667, 0.662745, 0.333333, 1 )
 
 [node name="Shard1" type="Area2D" parent="."]
 position = Vector2(650.0, 315.0)
@@ -158,7 +158,7 @@ script = ExtResource(5)
 shape = SubResource(5)
 [node name="Visual" type="Polygon2D" parent="Shard1"]
 polygon = PoolVector2Array( 0.0, -10.0, 7.0, 0.0, 0.0, 10.0, -7.0, 0.0 )
-color = Color("#65eaff")
+color = Color( 0.396078, 0.917647, 1.000000, 1 )
 
 [node name="Checkpoint" type="Area2D" parent="."]
 position = Vector2(1260.0, 385.0)
@@ -167,7 +167,7 @@ script = ExtResource(6)
 shape = SubResource(5)
 [node name="Visual" type="Polygon2D" parent="Checkpoint"]
 polygon = PoolVector2Array( 0.0, -25.0, 8.0, -8.0, 20.0, 0.0, 8.0, 8.0, 0.0, 25.0, -8.0, 8.0, -20.0, 0.0, -8.0, -8.0 )
-color = Color("#64d991")
+color = Color( 0.392157, 0.850980, 0.568627, 1 )
 
 [node name="HUD" type="CanvasLayer" parent="."]
 script = ExtResource(7)
