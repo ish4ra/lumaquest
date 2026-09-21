@@ -40,7 +40,31 @@ jobs:
           mkdir -p build
           godot --path . --no-window --export "Windows Desktop" build/LumaQuest.exe 2>&1 | tee export.log
           if grep -E "SCRIPT ERROR|Parse Error|Failed loading resource|ERROR:" export.log; then exit 1; fi
-      - name: Upload playtest
+      - name: Upload candidate
+        uses: actions/upload-artifact@v4
+        with:
+          name: LumaQuest-Windows-Candidate
+          path: build/
+
+  windows-runtime-test:
+    needs: windows
+    runs-on: windows-latest
+    steps:
+      - name: Download candidate
+        uses: actions/download-artifact@v4
+        with:
+          name: LumaQuest-Windows-Candidate
+          path: build
+      - name: Native Windows startup test
+        shell: pwsh
+        run: |
+          $p = Start-Process -FilePath ".\build\LumaQuest.exe" -PassThru
+          Start-Sleep -Seconds 8
+          if ($p.HasExited) {
+            throw "LumaQuest exited during startup smoke test. Exit code: $($p.ExitCode)"
+          }
+          Stop-Process -Id $p.Id -Force
+      - name: Publish verified playtest
         uses: actions/upload-artifact@v4
         with:
           name: LumaQuest-Windows-Playtest
