@@ -28,10 +28,18 @@ jobs:
           mkdir -p ~/.local/share/godot/templates/3.5.3.stable
           unzip -q Godot_v3.5.3-stable_export_templates.tpz
           cp -r templates/* ~/.local/share/godot/templates/3.5.3.stable/
+      - name: Validate project boot
+        run: |
+          set -o pipefail
+          timeout 8s godot --path . --no-window 2>&1 | tee boot.log || code=$?
+          if grep -E "SCRIPT ERROR|Parse Error|Failed loading resource|ERROR:" boot.log; then exit 1; fi
+          if [ "${code:-0}" -ne 0 ] && [ "${code:-0}" -ne 124 ]; then exit "${code}"; fi
       - name: Build Windows playtest
         run: |
+          set -o pipefail
           mkdir -p build
-          godot --path . --no-window --export "Windows Desktop" build/LumaQuest.exe
+          godot --path . --no-window --export "Windows Desktop" build/LumaQuest.exe 2>&1 | tee export.log
+          if grep -E "SCRIPT ERROR|Parse Error|Failed loading resource|ERROR:" export.log; then exit 1; fi
       - name: Upload playtest
         uses: actions/upload-artifact@v4
         with:
