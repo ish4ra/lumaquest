@@ -14,6 +14,7 @@ func _physics_process(delta):
     velocity.x = direction * speed
     velocity.y += 900.0 * delta
     velocity = move_and_slide(velocity, Vector2.UP)
+    $Visual.scale.x = direction
     if abs(global_position.x - start_x) > patrol_distance:
         direction *= -1
     for i in get_slide_count():
@@ -24,5 +25,9 @@ func _physics_process(delta):
 func take_hit(from_direction := 1):
     health -= 1
     velocity.x = from_direction * 170.0
+    modulate = Color(1,0.65,0.65,1)
     if health <= 0:
         queue_free()
+    else:
+        yield(get_tree().create_timer(0.12), "timeout")
+        modulate = Color.white
