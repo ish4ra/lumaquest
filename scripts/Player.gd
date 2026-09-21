@@ -22,6 +22,7 @@ var facing := 1
 var attacking := false
 var invulnerable := false
 var spawn_position := Vector2.ZERO
+var crouching := false
 
 func _ready():
     health = max_health
@@ -30,7 +31,12 @@ func _ready():
     emit_signal("shards_changed", shards)
 
 func _physics_process(delta):
+    crouching = Input.is_action_pressed("crouch") and is_on_floor()
+    $Body.scale.y = 0.62 if crouching else 1.0
+    $Body.position.y = 5.0 if crouching else 0.0
     var direction := Input.get_action_strength("move_right") - Input.get_action_strength("move_left")
+    if crouching:
+        direction = 0
     if direction != 0:
         facing = int(sign(direction))
         velocity.x = move_toward(velocity.x, direction * max_speed, acceleration * delta)
@@ -40,7 +46,7 @@ func _physics_process(delta):
     coyote_left = coyote_time if is_on_floor() else max(0.0, coyote_left - delta)
     jump_buffer_left = jump_buffer_time if Input.is_action_just_pressed("jump") else max(0.0, jump_buffer_left - delta)
 
-    if jump_buffer_left > 0.0 and coyote_left > 0.0:
+    if jump_buffer_left > 0.0 and coyote_left > 0.0 and not crouching:
         velocity.y = -jump_force
         jump_buffer_left = 0.0
         coyote_left = 0.0
