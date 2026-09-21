@@ -31,3 +31,7 @@ fairy_action={
 "deadzone": 0.3,
 "events": [ Object(InputEventKey,"physical_scancode":70), Object(InputEventJoypadButton,"button_index":2) ]
 }
+attack={
+"deadzone": 0.3,
+"events": [ Object(InputEventKey,"physical_scancode":74), Object(InputEventJoypadButton,"button_index":1) ]
+}
