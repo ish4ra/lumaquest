@@ -25,7 +25,7 @@ move_right={
 }
 jump={
 "deadzone": 0.3,
-"events": [ Object(InputEventKey,"physical_scancode":32), Object(InputEventJoypadButton,"button_index":0) ]
+"events": [ Object(InputEventKey,"physical_scancode":32), Object(InputEventKey,"physical_scancode":16777232), Object(InputEventJoypadButton,"button_index":0) ]
 }
 fairy_action={
 "deadzone": 0.3,
@@ -37,3 +37,8 @@ attack={
 }
 
 ; playtest build trigger
+
+crouch={
+"deadzone": 0.3,
+"events": [ Object(InputEventKey,"physical_scancode":83), Object(InputEventKey,"physical_scancode":16777234), Object(InputEventJoypadButton,"button_index":13) ]
+}
