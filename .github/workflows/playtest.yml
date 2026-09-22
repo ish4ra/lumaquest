@@ -68,6 +68,9 @@ jobs:
           if ($p.HasExited) {
             throw "LumaQuest exited during startup smoke test. Exit code: $($p.ExitCode)"
           }
+          if (Test-Path ".\\build\\LumaQuest.pck") {
+            throw "Standalone build regression: external LumaQuest.pck was generated."
+          }
           Stop-Process -Id $p.Id -Force
       - name: Package verified Dev Beta
         if: github.ref == 'refs/heads/main'
