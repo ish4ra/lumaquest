@@ -1,229 +1,168 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=14 format=2]
 [ext_resource path="res://scripts/Game.gd" type="Script" id=1]
 [ext_resource path="res://scenes/Player.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scenes/Luma.tscn" type="PackedScene" id=3]
-[ext_resource path="res://assets/pixel/ground.svg" type="Texture" id=4]
+[ext_resource path="res://assets/pixel/green_fields_backdrop.svg" type="Texture" id=4]
 [ext_resource path="res://assets/pixel/tree.svg" type="Texture" id=5]
-[ext_resource path="res://assets/pixel/ruin.svg" type="Texture" id=6]
-[ext_resource path="res://assets/pixel/green_fields_backdrop.svg" type="Texture" id=7]
-[ext_resource path="res://assets/pixel/foliage.svg" type="Texture" id=8]
-[ext_resource path="res://scenes/enemies/Goblin.tscn" type="PackedScene" id=9]
-[ext_resource path="res://scripts/HUD.gd" type="Script" id=10]
+[ext_resource path="res://assets/pixel/ruins_hd.svg" type="Texture" id=6]
+[ext_resource path="res://assets/pixel/bridge_hd.svg" type="Texture" id=7]
+[ext_resource path="res://assets/pixel/ground.svg" type="Texture" id=8]
+[ext_resource path="res://assets/pixel/foliage.svg" type="Texture" id=9]
+[ext_resource path="res://scenes/enemies/Goblin.tscn" type="PackedScene" id=10]
+[ext_resource path="res://scripts/HUD.gd" type="Script" id=11]
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2(128,48)
+extents = Vector2(260,58)
 [sub_resource type="RectangleShape2D" id=2]
-extents = Vector2(75,8)
+extents = Vector2(210,15)
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2(175,48)
 
 [node name="Main" type="Node2D"]
 script = ExtResource(1)
+
 [node name="Backdrop" type="CanvasLayer" parent="."]
-layer = -10
-follow_viewport_enable = true
-follow_viewport_scale = 0.12
-[node name="Sky" type="Sprite" parent="Backdrop"]
-position = Vector2(640,360)
-texture = ExtResource(7)
-scale = Vector2(1.34,1.5)
+layer = -20
+[node name="Sky" type="TextureRect" parent="Backdrop"]
+margin_right = 1280.0
+margin_bottom = 720.0
+texture = ExtResource(4)
+expand = true
+stretch_mode = 6
+[node name="Atmosphere" type="ColorRect" parent="Backdrop"]
+margin_right = 1280.0
+margin_bottom = 720.0
+color = Color(0.08,0.18,0.2,0.10)
+
 [node name="World" type="Node2D" parent="."]
-[node name="Decor" type="Node2D" parent="World"]
-[node name="Tree0" type="Sprite" parent="World/Decor"]
-position = Vector2(115,322)
-texture = ExtResource(5)
-scale = Vector2(1.15,1.15)
-
-[node name="Tree1" type="Sprite" parent="World/Decor"]
-position = Vector2(520,330)
-texture = ExtResource(5)
+[node name="DistantDecor" type="Node2D" parent="World"]
+[node name="AncientGate" type="Sprite" parent="World/DistantDecor"]
+position = Vector2(300,395)
+texture = ExtResource(6)
 scale = Vector2(0.9,0.9)
-
-[node name="Tree2" type="Sprite" parent="World/Decor"]
-position = Vector2(1510,322)
+[node name="AncientGate2" type="Sprite" parent="World/DistantDecor"]
+position = Vector2(2150,385)
+texture = ExtResource(6)
+scale = Vector2(1.05,1.05)
+[node name="TreeA" type="Sprite" parent="World/DistantDecor"]
+position = Vector2(70,350)
 texture = ExtResource(5)
-scale = Vector2(1.1,1.1)
-
-[node name="Tree3" type="Sprite" parent="World/Decor"]
-position = Vector2(2290,330)
+scale = Vector2(1.55,1.55)
+[node name="TreeB" type="Sprite" parent="World/DistantDecor"]
+position = Vector2(1030,365)
 texture = ExtResource(5)
-scale = Vector2(0.95,0.95)
+scale = Vector2(1.25,1.25)
+[node name="TreeC" type="Sprite" parent="World/DistantDecor"]
+position = Vector2(2820,355)
+texture = ExtResource(5)
+scale = Vector2(1.45,1.45)
 
-[node name="Ruin0" type="Sprite" parent="World/Decor"]
-position = Vector2(365,350)
-texture = ExtResource(6)
-scale = Vector2(0.65,0.65)
-
-[node name="Ruin1" type="Sprite" parent="World/Decor"]
-position = Vector2(1320,345)
-texture = ExtResource(6)
-scale = Vector2(0.72,0.72)
-
-[node name="Ruin2" type="Sprite" parent="World/Decor"]
-position = Vector2(2020,342)
-texture = ExtResource(6)
-scale = Vector2(0.75,0.75)
-
-[node name="Collision" type="Node2D" parent="World"]
-[node name="Ground0" type="StaticBody2D" parent="World/Collision"]
-position = Vector2(128,432)
-[node name="Shape" type="CollisionShape2D" parent="World/Collision/Ground0"]
+[node name="StartCliff" type="StaticBody2D" parent="World"]
+position = Vector2(330,585)
+[node name="Shape" type="CollisionShape2D" parent="World/StartCliff"]
 shape = SubResource(1)
-
-[node name="Ground1" type="StaticBody2D" parent="World/Collision"]
-position = Vector2(384,432)
-[node name="Shape" type="CollisionShape2D" parent="World/Collision/Ground1"]
-shape = SubResource(1)
-
-[node name="Ground2" type="StaticBody2D" parent="World/Collision"]
-position = Vector2(640,432)
-[node name="Shape" type="CollisionShape2D" parent="World/Collision/Ground2"]
-shape = SubResource(1)
-
-[node name="Ground3" type="StaticBody2D" parent="World/Collision"]
-position = Vector2(896,432)
-[node name="Shape" type="CollisionShape2D" parent="World/Collision/Ground3"]
-shape = SubResource(1)
-
-[node name="Ground4" type="StaticBody2D" parent="World/Collision"]
-position = Vector2(1152,432)
-[node name="Shape" type="CollisionShape2D" parent="World/Collision/Ground4"]
-shape = SubResource(1)
-
-[node name="Ground5" type="StaticBody2D" parent="World/Collision"]
-position = Vector2(1408,432)
-[node name="Shape" type="CollisionShape2D" parent="World/Collision/Ground5"]
-shape = SubResource(1)
-
-[node name="Ground6" type="StaticBody2D" parent="World/Collision"]
-position = Vector2(1664,432)
-[node name="Shape" type="CollisionShape2D" parent="World/Collision/Ground6"]
-shape = SubResource(1)
-
-[node name="Ground7" type="StaticBody2D" parent="World/Collision"]
-position = Vector2(1920,432)
-[node name="Shape" type="CollisionShape2D" parent="World/Collision/Ground7"]
-shape = SubResource(1)
-
-[node name="Ground8" type="StaticBody2D" parent="World/Collision"]
-position = Vector2(2176,432)
-[node name="Shape" type="CollisionShape2D" parent="World/Collision/Ground8"]
-shape = SubResource(1)
-
-[node name="Ground9" type="StaticBody2D" parent="World/Collision"]
-position = Vector2(2432,432)
-[node name="Shape" type="CollisionShape2D" parent="World/Collision/Ground9"]
-shape = SubResource(1)
-
-[node name="GroundArt0" type="Sprite" parent="World"]
-position = Vector2(128,432)
-texture = ExtResource(4)
-
-[node name="GroundArt1" type="Sprite" parent="World"]
-position = Vector2(384,432)
-texture = ExtResource(4)
-
-[node name="GroundArt2" type="Sprite" parent="World"]
-position = Vector2(640,432)
-texture = ExtResource(4)
-
-[node name="GroundArt3" type="Sprite" parent="World"]
-position = Vector2(896,432)
-texture = ExtResource(4)
-
-[node name="GroundArt4" type="Sprite" parent="World"]
-position = Vector2(1152,432)
-texture = ExtResource(4)
-
-[node name="GroundArt5" type="Sprite" parent="World"]
-position = Vector2(1408,432)
-texture = ExtResource(4)
-
-[node name="GroundArt6" type="Sprite" parent="World"]
-position = Vector2(1664,432)
-texture = ExtResource(4)
-
-[node name="GroundArt7" type="Sprite" parent="World"]
-position = Vector2(1920,432)
-texture = ExtResource(4)
-
-[node name="GroundArt8" type="Sprite" parent="World"]
-position = Vector2(2176,432)
-texture = ExtResource(4)
-
-[node name="GroundArt9" type="Sprite" parent="World"]
-position = Vector2(2432,432)
-texture = ExtResource(4)
-
-[node name="GroundArt10" type="Sprite" parent="World"]
-position = Vector2(2688,432)
-texture = ExtResource(4)
-
+[node name="Top" type="Sprite" parent="World/StartCliff"]
+texture = ExtResource(8)
+scale = Vector2(2.05,1.2)
 [node name="Bridge" type="StaticBody2D" parent="World"]
-position = Vector2(840,330)
+position = Vector2(805,545)
 [node name="Shape" type="CollisionShape2D" parent="World/Bridge"]
 shape = SubResource(2)
-[node name="Deck" type="Polygon2D" parent="World/Bridge"]
-polygon = PoolVector2Array(-75,-8,75,-8,75,8,-75,8)
-color = Color(0.34,0.22,0.13,1)
-[node name="Moss" type="Polygon2D" parent="World/Bridge"]
-polygon = PoolVector2Array(-75,-8,75,-8,75,-3,-75,-3)
-color = Color(0.42,0.62,0.28,1)
-[node name="UpperRuin" type="StaticBody2D" parent="World"]
-position = Vector2(1160,270)
-[node name="Shape" type="CollisionShape2D" parent="World/UpperRuin"]
-shape = SubResource(2)
-[node name="Ledge" type="Polygon2D" parent="World/UpperRuin"]
-polygon = PoolVector2Array(-75,-8,75,-8,75,8,-75,8)
-color = Color(0.34,0.4,0.35,1)
+[node name="Art" type="Sprite" parent="World/Bridge"]
+texture = ExtResource(7)
+[node name="EnemyCliff" type="StaticBody2D" parent="World"]
+position = Vector2(1270,585)
+[node name="Shape" type="CollisionShape2D" parent="World/EnemyCliff"]
+shape = SubResource(1)
+[node name="Top" type="Sprite" parent="World/EnemyCliff"]
+texture = ExtResource(8)
+scale = Vector2(2.05,1.2)
+[node name="LowerPath" type="StaticBody2D" parent="World"]
+position = Vector2(1760,650)
+[node name="Shape" type="CollisionShape2D" parent="World/LowerPath"]
+shape = SubResource(1)
+[node name="Top" type="Sprite" parent="World/LowerPath"]
+texture = ExtResource(8)
+scale = Vector2(2.05,1.2)
+[node name="RuinLedge" type="StaticBody2D" parent="World"]
+position = Vector2(2200,490)
+[node name="Shape" type="CollisionShape2D" parent="World/RuinLedge"]
+shape = SubResource(3)
+[node name="Top" type="Sprite" parent="World/RuinLedge"]
+texture = ExtResource(8)
+scale = Vector2(1.4,1.0)
+[node name="FinalCliff" type="StaticBody2D" parent="World"]
+position = Vector2(2720,585)
+[node name="Shape" type="CollisionShape2D" parent="World/FinalCliff"]
+shape = SubResource(1)
+[node name="Top" type="Sprite" parent="World/FinalCliff"]
+texture = ExtResource(8)
+scale = Vector2(2.05,1.2)
+
+[node name="Player" parent="." instance=ExtResource(2)]
+position = Vector2(270,485)
+[node name="Luma" parent="." instance=ExtResource(3)]
+position = Vector2(215,425)
+target_path = NodePath("../Player")
+scale = Vector2(1.35,1.35)
+[node name="GoblinA" parent="." instance=ExtResource(10)]
+position = Vector2(1200,500)
+[node name="GoblinB" parent="." instance=ExtResource(10)]
+position = Vector2(2190,405)
+[node name="GoblinC" parent="." instance=ExtResource(10)]
+position = Vector2(2810,500)
+
 [node name="Foreground" type="CanvasLayer" parent="."]
 layer = 5
 follow_viewport_enable = true
-follow_viewport_scale = 1.08
-[node name="LeavesL" type="Sprite" parent="Foreground"]
-position = Vector2(128,440)
-texture = ExtResource(8)
-[node name="LeavesR" type="Sprite" parent="Foreground"]
-position = Vector2(768,440)
-texture = ExtResource(8)
+follow_viewport_scale = 1.05
+[node name="LeavesLeft" type="Sprite" parent="Foreground"]
+position = Vector2(120,675)
+texture = ExtResource(9)
+scale = Vector2(1.4,1.4)
+[node name="LeavesRight" type="Sprite" parent="Foreground"]
+position = Vector2(1160,675)
+texture = ExtResource(9)
+scale = Vector2(1.4,1.4)
 flip_h = true
-[node name="Player" parent="." instance=ExtResource(2)]
-position = Vector2(300,370)
-[node name="Luma" parent="." instance=ExtResource(3)]
-position = Vector2(270,330)
-target_path = NodePath("../Player")
-[node name="GoblinA" parent="." instance=ExtResource(9)]
-position = Vector2(1010,378)
-[node name="GoblinB" parent="." instance=ExtResource(9)]
-position = Vector2(1740,378)
+
 [node name="HUD" type="CanvasLayer" parent="."]
 layer = 10
-script = ExtResource(10)
+script = ExtResource(11)
 [node name="Panel" type="ColorRect" parent="HUD"]
-margin_left = 12
-margin_top = 12
-margin_right = 244
-margin_bottom = 86
-color = Color(0.025,0.05,0.06,0.78)
+margin_left = 24.0
+margin_top = 22.0
+margin_right = 335.0
+margin_bottom = 150.0
+color = Color(0.015,0.035,0.045,0.82)
 [node name="Area" type="Label" parent="HUD"]
-margin_left = 24
-margin_top = 18
-margin_right = 220
-margin_bottom = 38
+margin_left = 42.0
+margin_top = 34.0
+margin_right = 310.0
+margin_bottom = 62.0
 text = "LUMAQUEST  •  GREEN FIELDS"
 [node name="Health" type="Label" parent="HUD"]
-margin_left = 24
-margin_top = 42
-margin_right = 210
-margin_bottom = 62
+margin_left = 42.0
+margin_top = 70.0
+margin_right = 310.0
+margin_bottom = 98.0
 text = "♥ ♥ ♥ ♥ ♥"
 [node name="Shards" type="Label" parent="HUD"]
-margin_left = 24
-margin_top = 64
-margin_right = 210
-margin_bottom = 82
+margin_left = 42.0
+margin_top = 108.0
+margin_right = 310.0
+margin_bottom = 136.0
 text = "Luma Shards: 0"
+[node name="Objective" type="Label" parent="HUD"]
+margin_left = 965.0
+margin_top = 30.0
+margin_right = 1250.0
+margin_bottom = 115.0
+text = "A BRIGHTER PATH\nExplore the Green Fields\nFind the ancient ruins"
+align = 2
 [node name="Controls" type="Label" parent="HUD"]
-margin_left = 390
-margin_top = 18
-margin_right = 625
-margin_bottom = 58
-text = "← → Move   ↑ Jump   ↓ Crouch\nJ Sword    F Luma"
+margin_left = 850.0
+margin_top = 665.0
+margin_right = 1240.0
+margin_bottom = 705.0
+text = "← → Move   ↑ Jump   ↓ Crouch   J Sword   F Luma"
 align = 2
