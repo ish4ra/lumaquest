@@ -80,4 +80,4 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           gh release delete dev-beta --repo "${{ github.repository }}" --yes --cleanup-tag 2>$null
-          gh release create dev-beta ".\\LumaQuest-Windows-Dev-Beta.zip" --repo "${{ github.repository }}" --target "${{ github.sha }}" --title "LumaQuest Dev Beta" --notes "Development beta of the rebuilt Green Fields vertical slice. Not v1.0.0." --prerelease
+          gh release create dev-beta ".\\LumaQuest-Windows-Dev-Beta.zip" ".\\build\\LumaQuest.exe" --repo "${{ github.repository }}" --target "${{ github.sha }}" --title "LumaQuest Dev Beta" --notes "Windows development beta." --prerelease
