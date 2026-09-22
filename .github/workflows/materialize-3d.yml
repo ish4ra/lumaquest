@@ -1,0 +1,34 @@
+name: Materialize LumaQuest 3D
+
+on:
+  push:
+    branches: [3d-redesign]
+    paths:
+      - "bootstrap/lumaquest3d.tar.gz"
+      - ".github/workflows/materialize-3d.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  materialize:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout redesign branch
+        uses: actions/checkout@v4
+
+      - name: Materialize 3D project
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf scripts scenes
+          tar -xzf bootstrap/lumaquest3d.tar.gz
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No materialized changes."
+            exit 0
+          fi
+          git commit -m "feat: implement Green Fields 3D vertical slice"
+          git push origin HEAD:3d-redesign
