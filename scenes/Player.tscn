@@ -1,52 +1,75 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=5 format=3]
 
-[ext_resource path="res://scripts/Player.gd" type="Script" id=1]
-[ext_resource path="res://assets/pixel/hero_hd.svg" type="Texture" id=2]
+[ext_resource type="Script" path="res://scripts/Player.gd" id="1_player"]
 
-[sub_resource type="RectangleShape2D" id=1]
-extents = Vector2(18, 48)
-[sub_resource type="RectangleShape2D" id=2]
-extents = Vector2(20, 30)
-[sub_resource type="RectangleShape2D" id=3]
-extents = Vector2(34, 25)
+[sub_resource type="CapsuleShape3D" id="Capsule_player"]
+radius = 0.42
+height = 1.8
 
-[node name="Player" type="KinematicBody2D"]
-script = ExtResource(1)
+[sub_resource type="BoxShape3D" id="Box_attack"]
+size = Vector3(1.8, 1.55, 2.0)
+
+[sub_resource type="SphereShape3D" id="Sphere_interaction"]
+radius = 2.4
+
+[node name="Player" type="CharacterBody3D"]
+script = ExtResource("1_player")
 collision_layer = 1
-collision_mask = 3
-[node name="StandingShape" type="CollisionShape2D" parent="."]
-position = Vector2(0, 0)
-shape = SubResource(1)
-[node name="CrouchShape" type="CollisionShape2D" parent="."]
-position = Vector2(0, 18)
-shape = SubResource(2)
-disabled = true
-[node name="VisualRoot" type="Node2D" parent="."]
-position = Vector2(0, -50)
-[node name="Hero" type="Sprite" parent="VisualRoot"]
-texture = ExtResource(2)
-centered = true
-[node name="Sword" type="Node2D" parent="VisualRoot"]
-position = Vector2(35, 51)
-rotation_degrees = -15
-[node name="Blade" type="Polygon2D" parent="VisualRoot/Sword"]
-polygon = PoolVector2Array( 0, -4, 48, -4, 62, 0, 48, 4, 0, 4 )
-color = Color(0.82, 0.9, 0.93, 1)
-[node name="Guard" type="Polygon2D" parent="VisualRoot/Sword"]
-polygon = PoolVector2Array( -4, -10, 4, -10, 4, 10, -4, 10 )
-color = Color(0.76, 0.56, 0.18, 1)
-[node name="AttackArea" type="Area2D" parent="."]
-position = Vector2(44, -8)
+collision_mask = 1
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+position = Vector3(0, 0.92, 0)
+shape = SubResource("Capsule_player")
+
+[node name="Visual" type="Node3D" parent="."]
+
+[node name="BodyRoot" type="Node3D" parent="Visual"]
+
+[node name="LeftArm" type="Node3D" parent="Visual/BodyRoot"]
+position = Vector3(-0.52, 1.66, 0)
+
+[node name="RightArm" type="Node3D" parent="Visual/BodyRoot"]
+position = Vector3(0.52, 1.66, 0)
+
+[node name="SwordPivot" type="Node3D" parent="Visual/BodyRoot/RightArm"]
+position = Vector3(0, -0.7, -0.05)
+rotation = Vector3(-0.436332, 0, 0)
+
+[node name="LeftLeg" type="Node3D" parent="Visual/BodyRoot"]
+position = Vector3(-0.23, 0.76, 0)
+
+[node name="RightLeg" type="Node3D" parent="Visual/BodyRoot"]
+position = Vector3(0.23, 0.76, 0)
+
+[node name="CameraPivot" type="Node3D" parent="."]
+position = Vector3(0, 1.6, 0)
+rotation = Vector3(-0.174533, 0, 0)
+
+[node name="SpringArm3D" type="SpringArm3D" parent="CameraPivot"]
+spring_length = 5.4
+margin = 0.15
+collision_mask = 1
+
+[node name="Camera3D" type="Camera3D" parent="CameraPivot/SpringArm3D"]
+current = true
+fov = 67.0
+near = 0.08
+far = 420.0
+
+[node name="AttackArea" type="Area3D" parent="."]
+position = Vector3(0, 1.05, -1.05)
 collision_layer = 0
 collision_mask = 2
-[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackArea"]
-shape = SubResource(3)
-[node name="Camera2D" type="Camera2D" parent="."]
-current = true
-position = Vector2(180, -90)
-limit_left = 0
-limit_top = 0
-limit_right = 4200
-limit_bottom = 720
-smoothing_enabled = true
-smoothing_speed = 6.5
+monitoring = true
+
+[node name="AttackShape" type="CollisionShape3D" parent="AttackArea"]
+shape = SubResource("Box_attack")
+
+[node name="InteractionArea" type="Area3D" parent="."]
+position = Vector3(0, 1.0, 0)
+collision_layer = 0
+collision_mask = 4
+monitoring = true
+
+[node name="InteractionShape" type="CollisionShape3D" parent="InteractionArea"]
+shape = SubResource("Sphere_interaction")
