@@ -1,83 +1,139 @@
-name: LumaQuest Dev Beta
+name: LumaQuest 3D Build
 
 on:
   workflow_dispatch:
   push:
-    branches: [ main, visual-overhaul ]
+    branches: [ main, 3d-redesign ]
     paths:
       - "project.godot"
       - "export_presets.cfg"
+      - "scripts/**"
+      - "scenes/**"
+      - "assets/**"
+      - "docs/**"
+      - "README.md"
+      - "CHANGELOG.md"
+      - "RELEASE_NOTES.md"
       - ".github/workflows/playtest.yml"
 
 permissions:
   contents: write
 
+env:
+  GODOT_VERSION: "4.7.2"
+  RELEASE_TAG: "v0.1.0-alpha.1"
+
 jobs:
-  windows:
+  validate-and-build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Download Godot
+
+      - name: Download Godot 4.7.2
         run: |
-          wget -q https://github.com/godotengine/godot/releases/download/3.5.3-stable/Godot_v3.5.3-stable_linux_headless.64.zip
-          unzip -q Godot_v3.5.3-stable_linux_headless.64.zip
-          chmod +x Godot_v3.5.3-stable_linux_headless.64
-          sudo mv Godot_v3.5.3-stable_linux_headless.64 /usr/local/bin/godot
+          wget -q "https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}-stable/Godot_v${GODOT_VERSION}-stable_linux.x86_64.zip"
+          unzip -q "Godot_v${GODOT_VERSION}-stable_linux.x86_64.zip"
+          chmod +x "Godot_v${GODOT_VERSION}-stable_linux.x86_64"
+          sudo mv "Godot_v${GODOT_VERSION}-stable_linux.x86_64" /usr/local/bin/godot
+
       - name: Install export templates
         run: |
-          wget -q https://github.com/godotengine/godot/releases/download/3.5.3-stable/Godot_v3.5.3-stable_export_templates.tpz
-          mkdir -p ~/.local/share/godot/templates/3.5.3.stable
-          unzip -q Godot_v3.5.3-stable_export_templates.tpz
-          cp -r templates/* ~/.local/share/godot/templates/3.5.3.stable/
-      - name: Validate project boot
+          wget -q "https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}-stable/Godot_v${GODOT_VERSION}-stable_export_templates.tpz"
+          mkdir -p "$HOME/.local/share/godot/export_templates/${GODOT_VERSION}.stable"
+          unzip -q "Godot_v${GODOT_VERSION}-stable_export_templates.tpz"
+          cp -r templates/* "$HOME/.local/share/godot/export_templates/${GODOT_VERSION}.stable/"
+
+      - name: Import and parse project
         run: |
           set -o pipefail
-          timeout 8s godot --path . --no-window 2>&1 | tee boot.log || code=$?
-          if grep -E "SCRIPT ERROR|Parse Error|Failed loading resource|ERROR:" boot.log; then exit 1; fi
-          if [ "${code:-0}" -ne 0 ] && [ "${code:-0}" -ne 124 ]; then exit "${code}"; fi
-      - name: Build Windows playtest
+          godot --headless --editor --path . --quit 2>&1 | tee import.log
+          if grep -E "SCRIPT ERROR|Parse Error|Failed loading resource|Cannot get class|ERROR:" import.log; then
+            echo "Godot reported import/parse errors."
+            exit 1
+          fi
+
+      - name: Headless boot smoke test
+        run: |
+          set -o pipefail
+          timeout 12s godot --headless --path . 2>&1 | tee boot.log || code=$?
+          if grep -E "SCRIPT ERROR|Parse Error|Failed loading resource|Invalid call|ERROR:" boot.log; then
+            exit 1
+          fi
+          if [ "${code:-0}" -ne 0 ] && [ "${code:-0}" -ne 124 ]; then
+            exit "${code}"
+          fi
+
+      - name: Build Windows release
         run: |
           set -o pipefail
           mkdir -p build
-          godot --path . --no-window --export "Windows Desktop" build/LumaQuest.exe 2>&1 | tee export.log
-          if grep -E "SCRIPT ERROR|Parse Error|Failed loading resource|ERROR:" export.log; then exit 1; fi
-      - name: Upload candidate
+          godot --headless --path . --export-release "Windows Desktop" build/LumaQuest.exe 2>&1 | tee export.log
+          if grep -E "SCRIPT ERROR|Parse Error|Failed loading resource|ERROR:" export.log; then
+            exit 1
+          fi
+          test -s build/LumaQuest.exe
+          if [ -f build/LumaQuest.pck ]; then
+            echo "Expected embedded PCK, but an external PCK was produced."
+            exit 1
+          fi
+
+      - name: Upload Windows candidate
         uses: actions/upload-artifact@v4
         with:
-          name: LumaQuest-Windows-Candidate
-          path: build/
+          name: LumaQuest-Windows-3D-Candidate
+          path: build/LumaQuest.exe
+          if-no-files-found: error
 
   windows-runtime-test:
-    needs: windows
+    needs: validate-and-build
     runs-on: windows-latest
     steps:
       - name: Download candidate
         uses: actions/download-artifact@v4
         with:
-          name: LumaQuest-Windows-Candidate
+          name: LumaQuest-Windows-3D-Candidate
           path: build
+
       - name: Native Windows startup test
         shell: pwsh
         run: |
           $p = Start-Process -FilePath ".\build\LumaQuest.exe" -PassThru
-          Start-Sleep -Seconds 8
+          Start-Sleep -Seconds 10
           if ($p.HasExited) {
             throw "LumaQuest exited during startup smoke test. Exit code: $($p.ExitCode)"
           }
-          if (Test-Path ".\\build\\LumaQuest.pck") {
-            throw "Standalone build regression: external LumaQuest.pck was generated."
-          }
           Stop-Process -Id $p.Id -Force
-      - name: Package verified Dev Beta
-        if: github.ref == 'refs/heads/main'
-        shell: pwsh
-        run: Compress-Archive -Path ".\\build\\*" -DestinationPath ".\\LumaQuest-Windows-Dev-Beta.zip" -Force
-      - name: Publish rolling Dev Beta release
-        if: github.ref == 'refs/heads/main'
-        shell: pwsh
+
+      - name: Re-upload verified executable
+        uses: actions/upload-artifact@v4
+        with:
+          name: LumaQuest-Windows-Verified
+          path: build/LumaQuest.exe
+
+  release:
+    if: github.ref == 'refs/heads/main'
+    needs: windows-runtime-test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout release notes
+        uses: actions/checkout@v4
+
+      - name: Download verified build
+        uses: actions/download-artifact@v4
+        with:
+          name: LumaQuest-Windows-Verified
+          path: release
+
+      - name: Package Windows build
+        run: |
+          cd release
+          zip -9 "LumaQuest-${RELEASE_TAG}-Windows.zip" LumaQuest.exe
+          cd ..
+
+      - name: Publish versioned 3D alpha
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh release delete dev-beta --repo "${{ github.repository }}" --yes --cleanup-tag 2>$null
-          gh release create dev-beta ".\\LumaQuest-Windows-Dev-Beta.zip" ".\\build\\LumaQuest.exe" --repo "${{ github.repository }}" --target "${{ github.sha }}" --title "LumaQuest Dev Beta" --notes "Windows development beta." --prerelease
+          gh release delete "${RELEASE_TAG}" --repo "${GITHUB_REPOSITORY}" --yes --cleanup-tag || true
+          gh release create "${RELEASE_TAG}"             "release/LumaQuest.exe"             "release/LumaQuest-${RELEASE_TAG}-Windows.zip"             --repo "${GITHUB_REPOSITORY}"             --target "${GITHUB_SHA}"             --title "LumaQuest ${RELEASE_TAG} — Green Fields 3D"             --notes-file RELEASE_NOTES.md             --prerelease
