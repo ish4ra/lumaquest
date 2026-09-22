@@ -20,6 +20,7 @@
 - procedural stylized trees, ruins, bridge, gorge, river, waterfalls, lanterns, mountains, clouds and castle
 - Godot 4 CI import/parse checks, Linux headless boot test, Windows export and native Windows startup smoke test
 - versioned prerelease workflow
+- preserved the previous 2D milestone on the `legacy-2d` branch
 
 ### Removed
 - runtime dependency on the old Godot 3 2D gameplay scripts/scenes
