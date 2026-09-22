@@ -1,16 +1,16 @@
 [gd_scene load_steps=4 format=2]
 [ext_resource path="res://scripts/Enemy.gd" type="Script" id=1]
-[ext_resource path="res://assets/pixel/goblin.svg" type="Texture" id=2]
+[ext_resource path="res://assets/pixel/goblin_hd.svg" type="Texture" id=2]
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2(20,22)
+extents = Vector2(30,42)
 [node name="Goblin" type="KinematicBody2D"]
 script = ExtResource(1)
 collision_layer = 2
 collision_mask = 1
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0,4)
+position = Vector2(0,0)
 shape = SubResource(1)
 [node name="VisualRoot" type="Node2D" parent="."]
-position = Vector2(0,-18)
+position = Vector2(0,-42)
 [node name="Sprite" type="Sprite" parent="VisualRoot"]
 texture = ExtResource(2)
