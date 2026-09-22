@@ -4,7 +4,7 @@ on:
   push:
     branches: [3d-redesign]
     paths:
-      - "bootstrap/lumaquest3d.tar.gz"
+      - "bootstrap/lumaquest3d.tar.gz.b64"
       - ".github/workflows/materialize-3d.yml"
 
 permissions:
@@ -22,7 +22,7 @@ jobs:
         run: |
           set -euo pipefail
           rm -rf scripts scenes
-          tar -xzf bootstrap/lumaquest3d.tar.gz
+          base64 -d bootstrap/lumaquest3d.tar.gz.b64 | tar -xz
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A
