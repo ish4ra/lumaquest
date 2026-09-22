@@ -1,14 +1,18 @@
-name: LumaQuest Playtest Build
+name: LumaQuest Dev Beta
 
 on:
   workflow_dispatch:
   push:
-    branches: [ main ]
+    branches: [ main, visual-overhaul ]
     paths:
       - "project.godot"
       - "export_presets.cfg"
       - "scenes/**"
       - "scripts/**"
+      - "assets/**"
+
+permissions:
+  contents: write
 
 jobs:
   windows:
@@ -64,8 +68,15 @@ jobs:
             throw "LumaQuest exited during startup smoke test. Exit code: $($p.ExitCode)"
           }
           Stop-Process -Id $p.Id -Force
-      - name: Publish verified playtest
-        uses: actions/upload-artifact@v4
-        with:
-          name: LumaQuest-Windows-Playtest
-          path: build/
+      - name: Package verified Dev Beta
+        if: github.ref == 'refs/heads/main'
+        shell: pwsh
+        run: Compress-Archive -Path ".\\build\\*" -DestinationPath ".\\LumaQuest-Windows-Dev-Beta.zip" -Force
+      - name: Publish rolling Dev Beta release
+        if: github.ref == 'refs/heads/main'
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release delete dev-beta --yes --cleanup-tag 2>$null
+          gh release create dev-beta ".\\LumaQuest-Windows-Dev-Beta.zip" --target "${{ github.sha }}" --title "LumaQuest Dev Beta" --notes "Development beta of the rebuilt Green Fields vertical slice. Not v1.0.0." --prerelease
