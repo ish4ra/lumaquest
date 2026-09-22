@@ -3,12 +3,13 @@ name: LumaQuest Playtest Build
 on:
   workflow_dispatch:
   push:
-    branches: [ main ]
+    branches: [ main, visual-overhaul ]
     paths:
       - "project.godot"
       - "export_presets.cfg"
       - "scenes/**"
       - "scripts/**"
+      - "assets/**"
 
 jobs:
   windows:
