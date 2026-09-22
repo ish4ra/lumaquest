@@ -3,7 +3,7 @@ name: LumaQuest Dev Beta
 on:
   workflow_dispatch:
   push:
-    branches: [ main, visual-overhaul ]
+    branches: [ main ]
     paths:
       - "project.godot"
       - "export_presets.cfg"
@@ -73,11 +73,16 @@ jobs:
         if: github.ref == 'refs/heads/main'
         shell: pwsh
         run: Compress-Archive -Path ".\\build\\*" -DestinationPath ".\\LumaQuest-Windows-Dev-Beta.zip" -Force
-      - name: Publish rolling Dev Beta release
+      - name: Publish numbered Dev Beta release
         if: github.ref == 'refs/heads/main'
         shell: pwsh
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh release delete dev-beta --repo "${{ github.repository }}" --yes --cleanup-tag 2>$null
-          gh release create dev-beta ".\\LumaQuest-Windows-Dev-Beta.zip" ".\\build\\LumaQuest.exe" --repo "${{ github.repository }}" --target "${{ github.sha }}" --title "LumaQuest Dev Beta" --notes "Windows development beta." --prerelease
+          $releases = gh release list --repo "${{ github.repository }}" --limit 100 --json name | ConvertFrom-Json
+          $nums = @($releases | ForEach-Object { if ($_.name -match '^LumaQuest Dev Beta ([0-9]+)
+) { [int]$Matches[1] } })
+          $next = if ($nums.Count -gt 0) { (($nums | Measure-Object -Maximum).Maximum + 1) } else { 1 }
+          $label = "{0:D2}" -f $next
+          $tag = "dev-beta-$label"
+          gh release create $tag ".\\LumaQuest-Windows-Dev-Beta.zip" ".\\build\\LumaQuest.exe" --repo "${{ github.repository }}" --target "${{ github.sha }}" --title "LumaQuest Dev Beta $label" --notes "Windows development beta $label." --prerelease
