@@ -128,4 +128,4 @@ The next large milestones are imported original character animation, expanded en
 
 **v0.1.0-alpha.1 — Green Fields 3D vertical slice**
 
-This is a development prerelease intended for playtesting the new 3D direction.
+This is a development prerelease intended for playtesting the new 3D direction. The CI pipeline validates the Godot 4.7.2 project and native Windows startup before release.
