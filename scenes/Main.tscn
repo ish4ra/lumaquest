@@ -1,197 +1,228 @@
-[gd_scene load_steps=16 format=2]
-
-[ext_resource path="res://scripts/Player.gd" type="Script" id=1]
-[ext_resource path="res://scripts/Fairy.gd" type="Script" id=2]
-[ext_resource path="res://scripts/HiddenPlatform.gd" type="Script" id=3]
-[ext_resource path="res://scripts/Enemy.gd" type="Script" id=4]
-[ext_resource path="res://scripts/LumaShard.gd" type="Script" id=5]
-[ext_resource path="res://scripts/Checkpoint.gd" type="Script" id=6]
-[ext_resource path="res://scripts/HUD.gd" type="Script" id=7]
-[ext_resource path="res://scripts/Game.gd" type="Script" id=8]
-[ext_resource path="res://scripts/WorldArt.gd" type="Script" id=9]
-[ext_resource path="res://scripts/Decoration.gd" type="Script" id=10]
-
+[gd_scene load_steps=12 format=2]
+[ext_resource path="res://scripts/Game.gd" type="Script" id=1]
+[ext_resource path="res://scenes/Player.tscn" type="PackedScene" id=2]
+[ext_resource path="res://scenes/Luma.tscn" type="PackedScene" id=3]
+[ext_resource path="res://assets/pixel/ground.svg" type="Texture" id=4]
+[ext_resource path="res://assets/pixel/tree.svg" type="Texture" id=5]
+[ext_resource path="res://assets/pixel/ruin.svg" type="Texture" id=6]
+[ext_resource path="res://assets/pixel/green_fields_backdrop.svg" type="Texture" id=7]
+[ext_resource path="res://assets/pixel/foliage.svg" type="Texture" id=8]
+[ext_resource path="res://scenes/enemies/Goblin.tscn" type="PackedScene" id=9]
+[ext_resource path="res://scripts/HUD.gd" type="Script" id=10]
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2(9.0, 15.0)
+extents = Vector2(128,48)
 [sub_resource type="RectangleShape2D" id=2]
-extents = Vector2(900.0, 12.0)
-[sub_resource type="RectangleShape2D" id=3]
-extents = Vector2(55.0, 8.0)
-[sub_resource type="RectangleShape2D" id=4]
-extents = Vector2(12.0, 12.0)
-[sub_resource type="CircleShape2D" id=5]
-radius = 9.0
-[sub_resource type="RectangleShape2D" id=6]
-extents = Vector2(17.0, 11.0)
+extents = Vector2(75,8)
 
 [node name="Main" type="Node2D"]
-script = ExtResource(8)
-
-[node name="WorldArt" type="Node2D" parent="."]
-script = ExtResource(9)
-
-[node name="Tree" type="Node2D" parent="."]
-position = Vector2(95.0, 418.0)
-script = ExtResource(10)
-variant = 0
-[node name="Ruin1" type="Node2D" parent="."]
-position = Vector2(255.0, 418.0)
-script = ExtResource(10)
-variant = 1
-[node name="Ruin2" type="Node2D" parent="."]
-position = Vector2(1210.0, 418.0)
-script = ExtResource(10)
-variant = 1
-[node name="Sign" type="Node2D" parent="."]
-position = Vector2(360.0, 418.0)
-script = ExtResource(10)
-variant = 2
-
-[node name="Ground" type="StaticBody2D" parent="."]
-position = Vector2(900.0, 430.0)
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Ground"]
-shape = SubResource(2)
-[node name="Earth" type="Polygon2D" parent="Ground"]
-polygon = PoolVector2Array( -900.0, -12.0, 900.0, -12.0, 900.0, 70.0, -900.0, 70.0 )
-color = Color( 0.094118, 0.231373, 0.168627, 1 )
-[node name="Grass" type="Polygon2D" parent="Ground"]
-polygon = PoolVector2Array( -900.0, -12.0, 900.0, -12.0, 900.0, -5.0, -900.0, -5.0 )
-color = Color( 0.396078, 0.658824, 0.301961, 1 )
-
-[node name="BridgePlatform" type="StaticBody2D" parent="."]
-position = Vector2(650.0, 345.0)
-[node name="CollisionShape2D" type="CollisionShape2D" parent="BridgePlatform"]
-shape = SubResource(3)
-[node name="Visual" type="Polygon2D" parent="BridgePlatform"]
-polygon = PoolVector2Array( -55.0, -8.0, 55.0, -8.0, 55.0, 8.0, -55.0, 8.0 )
-color = Color( 0.462745, 0.329412, 0.192157, 1 )
-
-[node name="HiddenPlatform" type="StaticBody2D" parent="."]
-position = Vector2(790.0, 285.0)
-script = ExtResource(3)
-[node name="CollisionShape2D" type="CollisionShape2D" parent="HiddenPlatform"]
-shape = SubResource(3)
-[node name="Visual" type="Polygon2D" parent="HiddenPlatform"]
-polygon = PoolVector2Array( -55.0, -8.0, 55.0, -8.0, 55.0, 8.0, -55.0, 8.0 )
-color = Color( 0.396078, 0.780392, 0.717647, 1 )
-
-[node name="RuinPlatform" type="StaticBody2D" parent="."]
-position = Vector2(930.0, 225.0)
-[node name="CollisionShape2D" type="CollisionShape2D" parent="RuinPlatform"]
-shape = SubResource(3)
-[node name="Visual" type="Polygon2D" parent="RuinPlatform"]
-polygon = PoolVector2Array( -55.0, -8.0, 55.0, -8.0, 55.0, 8.0, -55.0, 8.0 )
-color = Color( 0.411765, 0.454902, 0.388235, 1 )
-
-[node name="Player" type="KinematicBody2D" parent="."]
-position = Vector2(430.0, 382.0)
 script = ExtResource(1)
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
+[node name="Backdrop" type="CanvasLayer" parent="."]
+layer = -10
+follow_viewport_enable = true
+follow_viewport_scale = 0.12
+[node name="Sky" type="Sprite" parent="Backdrop"]
+position = Vector2(480,240)
+texture = ExtResource(7)
+[node name="World" type="Node2D" parent="."]
+[node name="Decor" type="Node2D" parent="World"]
+[node name="Tree0" type="Sprite" parent="World/Decor"]
+position = Vector2(115,322)
+texture = ExtResource(5)
+scale = Vector2(1.15,1.15)
+
+[node name="Tree1" type="Sprite" parent="World/Decor"]
+position = Vector2(520,330)
+texture = ExtResource(5)
+scale = Vector2(0.9,0.9)
+
+[node name="Tree2" type="Sprite" parent="World/Decor"]
+position = Vector2(1510,322)
+texture = ExtResource(5)
+scale = Vector2(1.1,1.1)
+
+[node name="Tree3" type="Sprite" parent="World/Decor"]
+position = Vector2(2290,330)
+texture = ExtResource(5)
+scale = Vector2(0.95,0.95)
+
+[node name="Ruin0" type="Sprite" parent="World/Decor"]
+position = Vector2(365,350)
+texture = ExtResource(6)
+scale = Vector2(0.65,0.65)
+
+[node name="Ruin1" type="Sprite" parent="World/Decor"]
+position = Vector2(1320,345)
+texture = ExtResource(6)
+scale = Vector2(0.72,0.72)
+
+[node name="Ruin2" type="Sprite" parent="World/Decor"]
+position = Vector2(2020,342)
+texture = ExtResource(6)
+scale = Vector2(0.75,0.75)
+
+[node name="Collision" type="Node2D" parent="World"]
+[node name="Ground0" type="StaticBody2D" parent="World/Collision"]
+position = Vector2(128,432)
+[node name="Shape" type="CollisionShape2D" parent="World/Collision/Ground0"]
 shape = SubResource(1)
-[node name="Body" type="Polygon2D" parent="Player"]
-polygon = PoolVector2Array( -9.0, -15.0, 7.0, -15.0, 10.0, -7.0, 9.0, 15.0, -8.0, 15.0, -10.0, -5.0 )
-color = Color( 0.850980, 0.894118, 0.862745, 1 )
-[node name="Cloak" type="Polygon2D" parent="Player"]
-polygon = PoolVector2Array( -8.0, -4.0, 5.0, -6.0, 12.0, 15.0, -10.0, 15.0 )
-color = Color( 0.145098, 0.309804, 0.231373, 1 )
-[node name="Hair" type="Polygon2D" parent="Player"]
-polygon = PoolVector2Array( -9.0, -15.0, -3.0, -22.0, 8.0, -19.0, 10.0, -10.0, 2.0, -13.0, -4.0, -9.0 )
-color = Color( 0.329412, 0.207843, 0.121569, 1 )
-[node name="SwordPivot" type="Node2D" parent="Player"]
-position = Vector2(8.0, 0.0)
-[node name="Blade" type="Polygon2D" parent="Player/SwordPivot"]
-visible = false
-polygon = PoolVector2Array( 4.0, -2.0, 27.0, -2.0, 32.0, 0.0, 27.0, 2.0, 4.0, 2.0 )
-color = Color( 0.909804, 0.956863, 0.933333, 1 )
-[node name="Hitbox" type="Area2D" parent="Player/SwordPivot"]
-monitoring = false
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Player/SwordPivot/Hitbox"]
-position = Vector2(16.0, 0.0)
-shape = SubResource(5)
-[node name="Camera2D" type="Camera2D" parent="Player"]
-current = true
-limit_left = 0
-limit_top = 0
-limit_right = 1800
-limit_bottom = 480
-smoothing_enabled = true
-smoothing_speed = 6.0
 
-[node name="Fairy" type="Node2D" parent="."]
-position = Vector2(400.0, 345.0)
-script = ExtResource(2)
+[node name="Ground1" type="StaticBody2D" parent="World/Collision"]
+position = Vector2(384,432)
+[node name="Shape" type="CollisionShape2D" parent="World/Collision/Ground1"]
+shape = SubResource(1)
+
+[node name="Ground2" type="StaticBody2D" parent="World/Collision"]
+position = Vector2(640,432)
+[node name="Shape" type="CollisionShape2D" parent="World/Collision/Ground2"]
+shape = SubResource(1)
+
+[node name="Ground3" type="StaticBody2D" parent="World/Collision"]
+position = Vector2(896,432)
+[node name="Shape" type="CollisionShape2D" parent="World/Collision/Ground3"]
+shape = SubResource(1)
+
+[node name="Ground4" type="StaticBody2D" parent="World/Collision"]
+position = Vector2(1152,432)
+[node name="Shape" type="CollisionShape2D" parent="World/Collision/Ground4"]
+shape = SubResource(1)
+
+[node name="Ground5" type="StaticBody2D" parent="World/Collision"]
+position = Vector2(1408,432)
+[node name="Shape" type="CollisionShape2D" parent="World/Collision/Ground5"]
+shape = SubResource(1)
+
+[node name="Ground6" type="StaticBody2D" parent="World/Collision"]
+position = Vector2(1664,432)
+[node name="Shape" type="CollisionShape2D" parent="World/Collision/Ground6"]
+shape = SubResource(1)
+
+[node name="Ground7" type="StaticBody2D" parent="World/Collision"]
+position = Vector2(1920,432)
+[node name="Shape" type="CollisionShape2D" parent="World/Collision/Ground7"]
+shape = SubResource(1)
+
+[node name="Ground8" type="StaticBody2D" parent="World/Collision"]
+position = Vector2(2176,432)
+[node name="Shape" type="CollisionShape2D" parent="World/Collision/Ground8"]
+shape = SubResource(1)
+
+[node name="Ground9" type="StaticBody2D" parent="World/Collision"]
+position = Vector2(2432,432)
+[node name="Shape" type="CollisionShape2D" parent="World/Collision/Ground9"]
+shape = SubResource(1)
+
+[node name="GroundArt0" type="Sprite" parent="World"]
+position = Vector2(128,432)
+texture = ExtResource(4)
+
+[node name="GroundArt1" type="Sprite" parent="World"]
+position = Vector2(384,432)
+texture = ExtResource(4)
+
+[node name="GroundArt2" type="Sprite" parent="World"]
+position = Vector2(640,432)
+texture = ExtResource(4)
+
+[node name="GroundArt3" type="Sprite" parent="World"]
+position = Vector2(896,432)
+texture = ExtResource(4)
+
+[node name="GroundArt4" type="Sprite" parent="World"]
+position = Vector2(1152,432)
+texture = ExtResource(4)
+
+[node name="GroundArt5" type="Sprite" parent="World"]
+position = Vector2(1408,432)
+texture = ExtResource(4)
+
+[node name="GroundArt6" type="Sprite" parent="World"]
+position = Vector2(1664,432)
+texture = ExtResource(4)
+
+[node name="GroundArt7" type="Sprite" parent="World"]
+position = Vector2(1920,432)
+texture = ExtResource(4)
+
+[node name="GroundArt8" type="Sprite" parent="World"]
+position = Vector2(2176,432)
+texture = ExtResource(4)
+
+[node name="GroundArt9" type="Sprite" parent="World"]
+position = Vector2(2432,432)
+texture = ExtResource(4)
+
+[node name="GroundArt10" type="Sprite" parent="World"]
+position = Vector2(2688,432)
+texture = ExtResource(4)
+
+[node name="Bridge" type="StaticBody2D" parent="World"]
+position = Vector2(840,330)
+[node name="Shape" type="CollisionShape2D" parent="World/Bridge"]
+shape = SubResource(2)
+[node name="Deck" type="Polygon2D" parent="World/Bridge"]
+polygon = PoolVector2Array(-75,-8,75,-8,75,8,-75,8)
+color = Color(0.34,0.22,0.13,1)
+[node name="Moss" type="Polygon2D" parent="World/Bridge"]
+polygon = PoolVector2Array(-75,-8,75,-8,75,-3,-75,-3)
+color = Color(0.42,0.62,0.28,1)
+[node name="UpperRuin" type="StaticBody2D" parent="World"]
+position = Vector2(1160,270)
+[node name="Shape" type="CollisionShape2D" parent="World/UpperRuin"]
+shape = SubResource(2)
+[node name="Ledge" type="Polygon2D" parent="World/UpperRuin"]
+polygon = PoolVector2Array(-75,-8,75,-8,75,8,-75,8)
+color = Color(0.34,0.4,0.35,1)
+[node name="Foreground" type="CanvasLayer" parent="."]
+layer = 5
+follow_viewport_enable = true
+follow_viewport_scale = 1.08
+[node name="LeavesL" type="Sprite" parent="Foreground"]
+position = Vector2(128,440)
+texture = ExtResource(8)
+[node name="LeavesR" type="Sprite" parent="Foreground"]
+position = Vector2(768,440)
+texture = ExtResource(8)
+flip_h = true
+[node name="Player" parent="." instance=ExtResource(2)]
+position = Vector2(300,370)
+[node name="Luma" parent="." instance=ExtResource(3)]
+position = Vector2(270,330)
 target_path = NodePath("../Player")
-[node name="Aura" type="Polygon2D" parent="Fairy"]
-visible = false
-polygon = PoolVector2Array( 0.0, -20.0, 14.0, -14.0, 20.0, 0.0, 14.0, 14.0, 0.0, 20.0, -14.0, 14.0, -20.0, 0.0, -14.0, -14.0 )
-color = Color(0.25,0.85,1,0.18)
-[node name="WingL" type="Polygon2D" parent="Fairy"]
-polygon = PoolVector2Array( -3.0, -2.0, -13.0, -12.0, -11.0, 1.0, -4.0, 5.0 )
-color = Color( 0.729412, 0.968627, 1.000000, 1 )
-[node name="WingR" type="Polygon2D" parent="Fairy"]
-polygon = PoolVector2Array( 3.0, -2.0, 13.0, -12.0, 11.0, 1.0, 4.0, 5.0 )
-color = Color( 0.729412, 0.968627, 1.000000, 1 )
-[node name="Glow" type="Polygon2D" parent="Fairy"]
-polygon = PoolVector2Array( 0.0, -7.0, 6.0, -2.0, 5.0, 6.0, 0.0, 9.0, -5.0, 6.0, -6.0, -2.0 )
-color = Color( 0.388235, 0.913725, 1.000000, 1 )
-
-[node name="Goblin1" type="KinematicBody2D" parent="."]
-position = Vector2(1080.0, 385.0)
-script = ExtResource(4)
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Goblin1"]
-shape = SubResource(6)
-[node name="Visual" type="Node2D" parent="Goblin1"]
-[node name="Body" type="Polygon2D" parent="Goblin1/Visual"]
-polygon = PoolVector2Array( -13.0, -10.0, 10.0, -12.0, 15.0, 0.0, 9.0, 12.0, -12.0, 12.0, -16.0, 0.0 )
-color = Color( 0.400000, 0.596078, 0.290196, 1 )
-[node name="EarL" type="Polygon2D" parent="Goblin1/Visual"]
-polygon = PoolVector2Array( -10.0, -7.0, -24.0, -12.0, -12.0, 1.0 )
-color = Color( 0.466667, 0.662745, 0.333333, 1 )
-[node name="EarR" type="Polygon2D" parent="Goblin1/Visual"]
-polygon = PoolVector2Array( 9.0, -7.0, 23.0, -12.0, 11.0, 1.0 )
-color = Color( 0.466667, 0.662745, 0.333333, 1 )
-
-[node name="Shard1" type="Area2D" parent="."]
-position = Vector2(650.0, 315.0)
-script = ExtResource(5)
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Shard1"]
-shape = SubResource(5)
-[node name="Visual" type="Polygon2D" parent="Shard1"]
-polygon = PoolVector2Array( 0.0, -10.0, 7.0, 0.0, 0.0, 10.0, -7.0, 0.0 )
-color = Color( 0.396078, 0.917647, 1.000000, 1 )
-
-[node name="Checkpoint" type="Area2D" parent="."]
-position = Vector2(1260.0, 385.0)
-script = ExtResource(6)
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Checkpoint"]
-shape = SubResource(5)
-[node name="Visual" type="Polygon2D" parent="Checkpoint"]
-polygon = PoolVector2Array( 0.0, -25.0, 8.0, -8.0, 20.0, 0.0, 8.0, 8.0, 0.0, 25.0, -8.0, 8.0, -20.0, 0.0, -8.0, -8.0 )
-color = Color( 0.392157, 0.850980, 0.568627, 1 )
-
+[node name="GoblinA" parent="." instance=ExtResource(9)]
+position = Vector2(1010,378)
+[node name="GoblinB" parent="." instance=ExtResource(9)]
+position = Vector2(1740,378)
 [node name="HUD" type="CanvasLayer" parent="."]
-script = ExtResource(7)
+layer = 10
+script = ExtResource(10)
+[node name="Panel" type="ColorRect" parent="HUD"]
+margin_left = 12
+margin_top = 12
+margin_right = 244
+margin_bottom = 86
+color = Color(0.025,0.05,0.06,0.78)
 [node name="Area" type="Label" parent="HUD"]
-margin_left = 16.0
-margin_top = 12.0
-margin_right = 220.0
-margin_bottom = 36.0
-text = "GREEN FIELDS"
+margin_left = 24
+margin_top = 18
+margin_right = 220
+margin_bottom = 38
+text = "LUMAQUEST  •  GREEN FIELDS"
 [node name="Health" type="Label" parent="HUD"]
-margin_left = 16.0
-margin_top = 38.0
-margin_right = 180.0
-margin_bottom = 64.0
-text = "♥ ♥ ♥"
+margin_left = 24
+margin_top = 42
+margin_right = 210
+margin_bottom = 62
+text = "♥ ♥ ♥ ♥ ♥"
 [node name="Shards" type="Label" parent="HUD"]
-margin_left = 16.0
-margin_top = 66.0
-margin_right = 220.0
-margin_bottom = 90.0
+margin_left = 24
+margin_top = 64
+margin_right = 210
+margin_bottom = 82
 text = "Luma Shards: 0"
-[node name="Hint" type="Label" parent="HUD"]
-margin_left = 300.0
-margin_top = 14.0
-margin_right = 625.0
-margin_bottom = 64.0
-text = "Arrows: Move / Jump / Crouch   J: Sword   F: Luma"
+[node name="Controls" type="Label" parent="HUD"]
+margin_left = 390
+margin_top = 18
+margin_right = 625
+margin_bottom = 58
+text = "← → Move   ↑ Jump   ↓ Crouch\nJ Sword    F Luma"
+align = 2
