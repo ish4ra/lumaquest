@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="360" viewBox="0 0 320 360" shape-rendering="crispEdges"><g>
+<path d="M24 340V78h42V40h53v32h82V28h58v51h36v261z" fill="#4d554e"/><path d="M38 340V91h45V55h25v46h111V45h24v51h38v244z" fill="#697168"/>
+<path d="M96 340V158c0-48 27-73 65-73s65 25 65 73v182h-35V164c0-27-11-43-30-43s-30 16-30 43v176z" fill="#273d34"/>
+<path d="M32 110h59v15H32zM228 108h58v15h-58zM49 185h45v13H49zM232 194h43v13h-43z" fill="#858c7b"/>
+<path d="M45 82h11v77h10v64h-9v117H45zM247 82h10v64h9v91h-10v103h-9z" fill="#285f39"/>
+<path d="M56 118h27v10H56zM238 142h31v11h-31zM47 238h35v12H47z" fill="#3f7a46"/>
+<path d="M12 340h296v20H12z" fill="#2c3d32"/></g></svg>
