@@ -10,6 +10,7 @@ on:
       - "scenes/**"
       - "scripts/**"
       - "assets/**"
+      - ".github/workflows/playtest.yml"
 
 permissions:
   contents: write
