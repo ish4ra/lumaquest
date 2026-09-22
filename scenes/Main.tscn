@@ -21,8 +21,9 @@ layer = -10
 follow_viewport_enable = true
 follow_viewport_scale = 0.12
 [node name="Sky" type="Sprite" parent="Backdrop"]
-position = Vector2(480,240)
+position = Vector2(640,360)
 texture = ExtResource(7)
+scale = Vector2(1.34,1.5)
 [node name="World" type="Node2D" parent="."]
 [node name="Decor" type="Node2D" parent="World"]
 [node name="Tree0" type="Sprite" parent="World/Decor"]
