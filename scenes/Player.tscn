@@ -1,52 +1,52 @@
 [gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://scripts/Player.gd" type="Script" id=1]
-[ext_resource path="res://assets/pixel/hero.svg" type="Texture" id=2]
+[ext_resource path="res://assets/pixel/hero_hd.svg" type="Texture" id=2]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2(9, 27)
+extents = Vector2(18, 48)
 [sub_resource type="RectangleShape2D" id=2]
-extents = Vector2(10, 17)
+extents = Vector2(20, 30)
 [sub_resource type="RectangleShape2D" id=3]
-extents = Vector2(18, 15)
+extents = Vector2(34, 25)
 
 [node name="Player" type="KinematicBody2D"]
 script = ExtResource(1)
 collision_layer = 1
 collision_mask = 3
 [node name="StandingShape" type="CollisionShape2D" parent="."]
-position = Vector2(0, 4)
+position = Vector2(0, 0)
 shape = SubResource(1)
 [node name="CrouchShape" type="CollisionShape2D" parent="."]
-position = Vector2(0, 14)
+position = Vector2(0, 18)
 shape = SubResource(2)
 disabled = true
 [node name="VisualRoot" type="Node2D" parent="."]
-position = Vector2(0, -24)
+position = Vector2(0, -50)
 [node name="Hero" type="Sprite" parent="VisualRoot"]
 texture = ExtResource(2)
 centered = true
 [node name="Sword" type="Node2D" parent="VisualRoot"]
-position = Vector2(17, 25)
+position = Vector2(35, 51)
 rotation_degrees = -15
 [node name="Blade" type="Polygon2D" parent="VisualRoot/Sword"]
-polygon = PoolVector2Array( 0, -2, 24, -2, 31, 0, 24, 2, 0, 2 )
+polygon = PoolVector2Array( 0, -4, 48, -4, 62, 0, 48, 4, 0, 4 )
 color = Color(0.82, 0.9, 0.93, 1)
 [node name="Guard" type="Polygon2D" parent="VisualRoot/Sword"]
-polygon = PoolVector2Array( -2, -5, 2, -5, 2, 5, -2, 5 )
+polygon = PoolVector2Array( -4, -10, 4, -10, 4, 10, -4, 10 )
 color = Color(0.76, 0.56, 0.18, 1)
 [node name="AttackArea" type="Area2D" parent="."]
-position = Vector2(22, -4)
+position = Vector2(44, -8)
 collision_layer = 0
 collision_mask = 2
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AttackArea"]
 shape = SubResource(3)
 [node name="Camera2D" type="Camera2D" parent="."]
 current = true
-position = Vector2(80, -55)
+position = Vector2(180, -90)
 limit_left = 0
 limit_top = 0
-limit_right = 2600
-limit_bottom = 480
+limit_right = 4200
+limit_bottom = 720
 smoothing_enabled = true
 smoothing_speed = 6.5
