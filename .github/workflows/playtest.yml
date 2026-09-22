@@ -7,9 +7,6 @@ on:
     paths:
       - "project.godot"
       - "export_presets.cfg"
-      - "scenes/**"
-      - "scripts/**"
-      - "assets/**"
       - ".github/workflows/playtest.yml"
 
 permissions:
